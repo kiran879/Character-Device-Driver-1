@@ -58,5 +58,7 @@ The driver routine initializes device parameters and performs the required opera
 
 
 How to Build and Run
+
   Run the Test Script(provide device file name as command line argument):
+  
      ./testScript myDevice
