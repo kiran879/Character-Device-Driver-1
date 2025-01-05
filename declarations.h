@@ -19,3 +19,6 @@ extern Device *myDev;
 
 int openMyCDD(struct inode*, struct file*);
 int closeMyCDD(struct inode*, struct file*);
+ssize_t readMyCDD (struct file *, char __user *, size_t, loff_t *);
+ssize_t writeMyCDD (struct file *, const char __user *, size_t, loff_t *);
+loff_t lseekMyCDD (struct file *, loff_t, int);
