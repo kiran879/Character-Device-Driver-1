@@ -26,7 +26,12 @@ void* mainMenu(void* arg)
 	else if(choice==1)
 		(*f_fptr[2])((void*)arg);//openDevice
 	else if(choice<6 && choice>1)
-		(*f_fptr[choice+1])(0);//read,write,lseek,close Device
+	{
+		if(fd==-1)
+			printf("Application: FILE:%s-> %s: No stream found to the device file, please open the device file\n",__FILE__,__func__);
+		else
+			(*f_fptr[choice+1])(0);//read,write,lseek,close Device
+	}
 	else
 		printf("Application: FILE:%s-> %s: Invalid choice\n",__FILE__,__func__);
 	printf("Testing fd:%d\n",fd);
