@@ -1,0 +1,111 @@
+#!/bin/bash
+
+ExitDriver()
+{
+	exit 0
+}
+
+build_cdd()
+{
+	if(make)
+	then
+		echo "Driver Build Successful"
+	else
+		echo "Error: Driver Build Failed"
+		read
+	fi
+}
+insert_mod()
+{
+	insmod ./LKM.ko NoD=10 devSize=128 regSize=4 noofReg=8 dataSize=64
+}
+
+watch()
+{
+	dmesg
+	read
+	lsmod
+	read
+	cat /proc/devices
+	read
+	cat /proc/modules
+	read
+}
+remove_mod()
+{
+	rmmod LKM
+}
+clean_directory()
+{
+	if(make clean)
+	then
+		echo "Driver directory cleaned successfully"
+	else
+		echo "Error: clean_directory Failed"
+		read
+	fi
+}
+build_application()
+{
+	if(cd Application/ && make)
+	then
+		
+		echo "Application Build Successful"
+	else
+		echo "Error: Application Build Failed"
+		read
+	fi	
+}
+run_application()
+{
+	read -p "Enter major No:" mn
+	mknod myDevice c $mn 0
+	./Application/application $1
+}
+mainMenu()
+{
+	echo "MAIN MENU"
+	echo "1: Build Driver"
+	echo "2: Insert Module"
+	echo "3: Watch updates"
+	echo "4: Remove Driver"
+	echo "5: clean directory"
+	echo "6: Build Application"
+	echo "7: Run Application"
+	echo "0: Exit Project"
+	echo "Please enter your choice..."
+	read choice
+	case $choice in
+		1)
+			build_cdd
+			;;
+		2)
+			insert_mod
+			;;
+		3)
+			watch
+			;;
+		4)
+			remove_mod
+			;;
+		5)
+			clean_directory
+			;;
+		6)
+			build_application
+			;;
+		7)
+			run_application $1
+			;;
+		0)
+			ExitDriver
+			;;
+		*)
+			echo "Invalid option"
+			;;
+	esac
+}
+while true
+do
+	mainMenu $1
+done
