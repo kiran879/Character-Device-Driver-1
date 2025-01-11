@@ -7,6 +7,12 @@ extern int devSize, regSize, noofReg,dataSize;
 #ifndef CDDNAME
 #define CDDNAME "myCharacterDriver"
 #endif
+typedef struct item
+{
+	char **data;
+	struct item *next;
+}Item;
+
 typedef struct
 {
 	int devSize;
@@ -14,6 +20,7 @@ typedef struct
 	int noofReg;
 	int dataSize;
 	struct cdev mycdev;
+	Item *item;
 }Device;
 extern Device *myDev;
 
@@ -25,3 +32,4 @@ loff_t lseekMyCDD (struct file *, loff_t, int);
 
 //function to trim the device content befor handling the writing 
 int trimMyCDD (Device*);
+Item* createScull(Device*,int);
