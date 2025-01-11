@@ -41,6 +41,7 @@ static int __init LKM_init(void)
 		myDev[i].noofReg=noofReg;
 		myDev[i].dataSize=dataSize;
 		myDev[i].mycdev.ops=&fops;
+		myDev[i].item=NULL;
 		
 		devID=MKDEV(majorNo,i);
 		ret=cdev_add(&myDev[i].mycdev,devID,NoD);
