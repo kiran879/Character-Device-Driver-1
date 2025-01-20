@@ -60,7 +60,7 @@ run_application()
 {
 	read -p "Enter major No:" mn
 	mknod myDevice c $mn 0
-	./Application/application $1
+	./Application/application $1 
 }
 mainMenu()
 {
@@ -95,7 +95,7 @@ mainMenu()
 			build_application
 			;;
 		7)
-			run_application $1
+			run_application $1 
 			;;
 		0)
 			ExitDriver
