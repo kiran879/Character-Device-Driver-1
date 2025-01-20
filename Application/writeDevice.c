@@ -2,12 +2,13 @@
 #include"f_declarations.h"
 void* writeDevice(void* arg)
 {
-	char buff[10];
+	char buff[]="In this world where you are, just be kind and spread love";
 	int ret;
 #ifdef DEBUG
 	printf("F_Operations: FILE:%s-> %s:Begin\n",__FILE__,__func__);
 #endif
-	ret=write(fd,buff,10);
+	printf("testing : strlen- %d,string:%s\n",strlen(buff),buff);
+	ret=write(fd,buff,strlen(buff));
 	if(ret == -1)
 	{
 		perror("write");
