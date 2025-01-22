@@ -2,7 +2,7 @@
 #include"f_declarations.h"
 void* writeDevice(void* arg)
 {
-	char buff[]="In this world where you are, just be kind and spread love";
+	char buff[]="love";
 	int ret;
 #ifdef DEBUG
 	printf("F_Operations: FILE:%s-> %s:Begin\n",__FILE__,__func__);
@@ -14,7 +14,7 @@ void* writeDevice(void* arg)
 		perror("write");
 		(*f_fptr[1])((void*)"failure");
 	}
-
+	printf("No.of bytes successfully written are:%d\n",ret);
 #ifdef DEBUG
 	printf("F_Operations: FILE:%s-> %s:End\n",__FILE__,__func__);
 #endif
