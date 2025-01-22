@@ -32,6 +32,7 @@ static int __init LKM_init(void)
 		printk(KERN_ERR "%s: Error: kmalloc() failed!\n",__func__);
 		return 0;
 	}
+	memset(myDev,'\0',sizeof(Device)*NoD);
 	for(i=0;i<NoD;i++)
 	{
 		cdev_init(&myDev[i].mycdev,&fops);
