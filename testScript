@@ -17,7 +17,7 @@ build_cdd()
 }
 insert_mod()
 {
-	insmod ./LKM.ko NoD=10 devSize=128 regSize=4 noofReg=8 dataSize=64
+	insmod ./LKM.ko NoD=10 devSize=128 regSize=4 noofReg=8 dataSize=0
 }
 
 watch()
