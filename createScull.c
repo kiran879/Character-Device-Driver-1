@@ -32,7 +32,7 @@ Item* createScull(Device *dev,int size)
 	last=first;
 	for(i=0;i<no_items;i++)
 	{
-		last->data=(char**)kmalloc(sizeof(char*)*dev->noofReg,GFP_KERNEL);
+		last->data=kmalloc(sizeof(char*)*dev->noofReg,GFP_KERNEL);
 		if(!last->data)
 		{
 			printk(KERN_ERR "Error: item data allocation failed for item no:%d\n",i);
