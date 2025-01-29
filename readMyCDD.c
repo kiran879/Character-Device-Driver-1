@@ -9,7 +9,7 @@ ssize_t readMyCDD(struct file *pfi, char __user *buff, size_t size, loff_t *offs
         ldev=pfi->private_data;
 	l_item=ldev->item;
         if(size<=ldev->dataSize)
-                lsize=size;
+                lsize=size;//********need another adjustment when offset is different
         else
                 lsize=ldev->dataSize;
 
@@ -20,7 +20,16 @@ ssize_t readMyCDD(struct file *pfi, char __user *buff, size_t size, loff_t *offs
         //read operation
         rem_size=lsize;
         nob_read=0;
-        for(i=j=0;j<no_quantums;j++)
+	//adjusting item number and quantum according to the offset
+	printk(KERN_INFO "offset: %lld\n",*offset);
+	for(i=0;i<(*offset/(ldev->noofReg*ldev->regSize));i++)
+	{
+		l_item=l_item->next;
+	}
+	i=*offset/ldev->regSize;
+	i=i%ldev->noofReg;
+
+        for(j=*offset/ldev->regSize;j<no_quantums;j++)
         {
                 nob_toRead=ldev->regSize;//no. of bytes to copy
                 if(rem_size<ldev->regSize)
@@ -45,7 +54,8 @@ ssize_t readMyCDD(struct file *pfi, char __user *buff, size_t size, loff_t *offs
                 else
                         i++;
         }
-
+	pfi->f_pos=pfi->f_pos+(loff_t)nob_read;
+	printk(KERN_INFO "Testing: f_pos:%lld\n",pfi->f_pos);
         printk(KERN_INFO "FILE:%s -> %s:End\n",__FILE__,__func__);
         return nob_read;
 out:
