@@ -9,7 +9,7 @@ extern int devSize, regSize, noofReg,dataSize;
 #endif
 typedef struct item
 {
-	char **data;
+	void **data;
 	struct item *next;
 }Item;
 
