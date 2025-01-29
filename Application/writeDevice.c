@@ -2,7 +2,7 @@
 #include"f_declarations.h"
 void* writeDevice(void* arg)
 {
-	char buff[]="love";
+	char buff[]="In this world, what you can be, just be kind";
 	int ret;
 #ifdef DEBUG
 	printf("F_Operations: FILE:%s-> %s:Begin\n",__FILE__,__func__);
