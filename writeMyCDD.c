@@ -54,6 +54,7 @@ ssize_t writeMyCDD(struct file *pfi, const char __user *ubuff, size_t size, loff
 	//printk(KERN_INFO "Data at 2nd quantum:%s\n",ldev->item->next->data[2]);
 	
 	ldev->dataSize=nob_wrote;
+	pfi->f_pos=nob_wrote;
 	printk(KERN_INFO "FILE:%s -> %s:End\n",__FILE__,__func__);
 	return nob_wrote;
 out:
