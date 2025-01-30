@@ -29,7 +29,7 @@ loff_t lseekMyCDD(struct file *pfi, loff_t offset, int origin)
 				printk(KERN_ERR "Offset is larger than the data in the device\n");
 				goto out;
 			}
-			pfi->f_pos=pfi->f_pos+offset;//adding with the f_pos of SEEK_END(which is end of the file)
+			pfi->f_pos=ldev->dataSize+offset;//adding with the f_pos of SEEK_END(which is end of the file)
 			break;
 	}
 
