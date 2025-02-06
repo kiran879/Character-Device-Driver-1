@@ -5,6 +5,11 @@ loff_t lseekMyCDD(struct file *pfi, loff_t offset, int origin)
 	Device *ldev;
 	printk(KERN_INFO "FILE:%s -> %s:Begin\n",__FILE__,__func__);
 	ldev=pfi->private_data;
+	if(ldev->dataSize==0)
+	{
+		printk(KERN_INFO "Device file is empty hence no seeking is allowed\n");
+		goto out;
+	}
 	switch(origin)
 	{
 		case 0:
