@@ -17,6 +17,7 @@ Item* createScull(Device *dev,int size)
 		goto out;
 	}
 	memset(last,'\0',sizeof(Item));
+	//last->next=NULL;
 	for(i=1;i<no_items;i++)
 	{
 		last->next=(Item*)kmalloc(sizeof(Item),GFP_KERNEL);
@@ -27,6 +28,7 @@ Item* createScull(Device *dev,int size)
 		}
 		memset(last->next,'\0',sizeof(Item));
 		last=last->next;
+		//last=NULL;
 	}
 	//creating array that holds the registers
 	last=first;
