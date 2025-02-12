@@ -32,6 +32,8 @@ ssize_t writeMyCDD(struct file *pfi, const char __user *ubuff, size_t size, loff
 		{	
 			nob_tocopy=rem_size;
 		}
+		//critical section
+		down(&ldev->ksem);//semaphore decrement(wait)
 		wret=copy_from_user(l_item->data[i],ubuff+nob_wrote,nob_tocopy);
 		if(wret==-1)
 		{
@@ -39,7 +41,7 @@ ssize_t writeMyCDD(struct file *pfi, const char __user *ubuff, size_t size, loff
 			printk(KERN_ERR "Error: copy_from_user failed!\n");
 			goto out;
 		}
-
+		up(&ldev->ksem);//semaphore increment
 		rem_size = rem_size - (nob_tocopy-wret);//remaining size/bytes to copy;
 		nob_wrote=nob_wrote+nob_tocopy-wret;
 		if(i==ldev->noofReg-1)//if all the quantums in a item are filled

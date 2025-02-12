@@ -21,6 +21,8 @@ typedef struct
 	int dataSize;
 	struct cdev mycdev;
 	Item *item;
+	struct semaphore ksem;
+	struct completion kcom;
 }Device;
 extern Device *myDev;
 

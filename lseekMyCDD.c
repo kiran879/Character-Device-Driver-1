@@ -10,6 +10,9 @@ loff_t lseekMyCDD(struct file *pfi, loff_t offset, int origin)
 		printk(KERN_INFO "Device file is empty hence no seeking is allowed\n");
 		goto out;
 	}
+	//crictical region. synchronize using completion interruptible
+	if(wait_for_completion_interruptible(&ldev->kcom)==-1)
+		return -ERESTARTSYS;
 	switch(origin)
 	{
 		case 0:
@@ -37,6 +40,7 @@ loff_t lseekMyCDD(struct file *pfi, loff_t offset, int origin)
 			pfi->f_pos=ldev->dataSize+offset;//adding with the f_pos of SEEK_END(which is end of the file)
 			break;
 	}
+	complete(&ldev->kcom);
 
 	printk(KERN_INFO "FILE:%s -> %s:End\n",__FILE__,__func__);
 	return 0;

@@ -7,6 +7,7 @@ static void __exit LKM_exit(void)
 //	unregister_chrdev(major,"My character device driver");
 	for(i=0;i<NoD;i++)
 	{
+		completion_done(&myDev[i].kcom);
 		cdev_del(&myDev[i].mycdev);
 	}
 	kfree(myDev);
