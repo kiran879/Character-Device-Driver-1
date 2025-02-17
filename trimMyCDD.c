@@ -6,7 +6,7 @@ int trimMyCDD(Device *dev)
 	int i,temp=0;
 	printk(KERN_INFO "FILE:%s -> %s:Begin\n",__FILE__,__func__);
 	last=slast=dev->item;
-	while(last)
+	while(last && dev->dataSize != 0)
 	{
 		printk(KERN_INFO "inside top while\n");
 		while(last->next)

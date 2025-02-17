@@ -12,6 +12,13 @@ ssize_t writeMyCDD(struct file *pfi, const char __user *ubuff, size_t size, loff
 	else
 		lsize=ldev->devSize;
 
+	//critical section
+	// synchronize using completion interruptible to handshake with reader
+	if(ldev->dataSize==0)
+		if(wait_for_completion_interruptible(&ldev->kcom)==-1)
+			return -ERESTARTSYS;
+
+	down(&ldev->ksem);//semaphore decrement(wait)
 	l_item=ldev->item=createScull(ldev,lsize);//creating scull
 	if(l_item==0)
 	{
@@ -32,8 +39,6 @@ ssize_t writeMyCDD(struct file *pfi, const char __user *ubuff, size_t size, loff
 		{	
 			nob_tocopy=rem_size;
 		}
-		//critical section
-		down(&ldev->ksem);//semaphore decrement(wait)
 		wret=copy_from_user(l_item->data[i],ubuff+nob_wrote,nob_tocopy);
 		if(wret==-1)
 		{

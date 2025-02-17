@@ -36,6 +36,9 @@ ssize_t readMyCDD(struct file *pfi, char __user *buff, size_t size, loff_t *offs
 	i=i%ldev->noofReg;
 
 	start_offset=l_offset % ldev->regSize;//to start reading from byte position inside the quantum.
+	 //critical section
+	down(&ldev->ksem);//semaphore decrement(wait)
+
 	//iterating number of qauntums time to read all the required data
         for(j=l_offset/ldev->regSize;j<no_quantums;j++)
         {
@@ -65,6 +68,8 @@ ssize_t readMyCDD(struct file *pfi, char __user *buff, size_t size, loff_t *offs
                         i++;
      		start_offset=0;//making zero inorder not to change nob_toRead in rest of the iterations
 	}
+	up(&ldev->ksem);//semaphore increment
+	complete(&ldev->kcom);//completion unlock inorder to handshake with writer
 	//pfi->f_pos=pfi->f_pos+(loff_t)nob_read;
 	printk(KERN_INFO "Testing: f_pos:%lld\n",pfi->f_pos);
         printk(KERN_INFO "FILE:%s -> %s:End\n",__FILE__,__func__);
