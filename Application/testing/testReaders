@@ -1,0 +1,11 @@
+#!/bin/bash
+./readers &
+./readers &
+./readers &
+./readers &
+./readers &
+./readers &
+./readers &
+./readers &
+./readers &
+./readers 

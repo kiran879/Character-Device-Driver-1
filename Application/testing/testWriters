@@ -1,0 +1,11 @@
+#!/bin/bash
+./writer1 &
+./writer2 &
+./writer3 &
+./writer4 &
+./writer5 &
+./writer1 &
+./writer2 &
+./writer3 &
+./writer4 &
+./writer5 
