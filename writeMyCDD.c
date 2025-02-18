@@ -14,9 +14,12 @@ ssize_t writeMyCDD(struct file *pfi, const char __user *ubuff, size_t size, loff
 
 	//critical section
 	// synchronize using completion interruptible to handshake with reader
-	if(ldev->dataSize==0)
+/*
+ * commeting as we are using better sync technique, "wait queue"
+ 	if(ldev->dataSize==0)
 		if(wait_for_completion_interruptible(&ldev->kcom)==-1)
 			return -ERESTARTSYS;
+*/
 
 	down(&ldev->ksem);//semaphore decrement(wait)
 	l_item=ldev->item=createScull(ldev,lsize);//creating scull
@@ -46,7 +49,6 @@ ssize_t writeMyCDD(struct file *pfi, const char __user *ubuff, size_t size, loff
 			printk(KERN_ERR "Error: copy_from_user failed!\n");
 			goto out;
 		}
-		up(&ldev->ksem);//semaphore increment
 		rem_size = rem_size - (nob_tocopy-wret);//remaining size/bytes to copy;
 		nob_wrote=nob_wrote+nob_tocopy-wret;
 		if(i==ldev->noofReg-1)//if all the quantums in a item are filled
@@ -62,6 +64,8 @@ ssize_t writeMyCDD(struct file *pfi, const char __user *ubuff, size_t size, loff
 	
 	ldev->dataSize=nob_wrote;
 	pfi->f_pos=nob_wrote;
+	wake_up_interruptible(&ldev->waitQ);//signalling the readers to wake up from the wait queue.
+	up(&ldev->ksem);//semaphore increment
 	printk(KERN_INFO "FILE:%s -> %s:End\n",__FILE__,__func__);
 	return nob_wrote;
 out:

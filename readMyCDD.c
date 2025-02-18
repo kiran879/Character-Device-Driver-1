@@ -10,6 +10,7 @@ ssize_t readMyCDD(struct file *pfi, char __user *buff, size_t size, loff_t *offs
 
         printk(KERN_INFO "FILE:%s -> %s:Begin\n",__FILE__,__func__);
         ldev=pfi->private_data;
+	wait_event_interruptible(ldev->waitQ,ldev->dataSize>0);//move to wait queue until write makes the condition true and wakes up
 	l_item=ldev->item;
 	if(*offset>0)
 		l_offset=*offset-1;//to start reading exactly from the offset
@@ -37,6 +38,7 @@ ssize_t readMyCDD(struct file *pfi, char __user *buff, size_t size, loff_t *offs
 
 	start_offset=l_offset % ldev->regSize;//to start reading from byte position inside the quantum.
 	 //critical section
+//	wait_event_interruptible(ldev->waitQ,ldev->dataSize>0);//move to wait queue until write makes the condition true and wakes up
 	down(&ldev->ksem);//semaphore decrement(wait)
 
 	//iterating number of qauntums time to read all the required data
@@ -69,7 +71,7 @@ ssize_t readMyCDD(struct file *pfi, char __user *buff, size_t size, loff_t *offs
      		start_offset=0;//making zero inorder not to change nob_toRead in rest of the iterations
 	}
 	up(&ldev->ksem);//semaphore increment
-	complete(&ldev->kcom);//completion unlock inorder to handshake with writer
+//	complete(&ldev->kcom);//completion unlock inorder to handshake with writer
 	//pfi->f_pos=pfi->f_pos+(loff_t)nob_read;
 	printk(KERN_INFO "Testing: f_pos:%lld\n",pfi->f_pos);
         printk(KERN_INFO "FILE:%s -> %s:End\n",__FILE__,__func__);

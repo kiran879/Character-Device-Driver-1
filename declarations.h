@@ -23,6 +23,7 @@ typedef struct
 	Item *item;
 	struct semaphore ksem;
 	struct completion kcom;
+	wait_queue_head_t waitQ;
 }Device;
 extern Device *myDev;
 

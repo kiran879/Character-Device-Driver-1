@@ -46,6 +46,7 @@ static int __init LKM_init(void)
 		sema_init(&myDev[i].ksem,1);//initializing semaphore value with 1
 		init_completion(&myDev[i].kcom);//initializing semaphore value with 0 by default
 		myDev[i].kcom.done=1;	
+		init_waitqueue_head(&myDev[i].waitQ);//initializing wait queue
 		devID=MKDEV(majorNo,i);
 		ret=cdev_add(&myDev[i].mycdev,devID,NoD);
 		if(ret==-1)
