@@ -1,12 +1,24 @@
+#ifndef CDDNAME
+#define CDDNAME "My Character Device"
+#endif
+
+#ifndef DEVSIZE
+#define DEVSIZE 128
+#endif
+#ifndef REGSIZE
+#define REGSIZE 8
+#endif
+#ifndef NOOFREG
+#define NOOFREG 8
+#endif
+#ifndef DATASIZE 
+#define DATASIZE 0
+#endif
 extern int NoD;
 extern int majorNo;
 extern int minorNo;
 extern dev_t devNo,devID;
 extern int devSize, regSize, noofReg,dataSize;
-
-#ifndef CDDNAME
-#define CDDNAME "myCharacterDriver"
-#endif
 typedef struct item
 {
 	void **data;
@@ -32,7 +44,7 @@ int closeMyCDD(struct inode*, struct file*);
 ssize_t readMyCDD (struct file *, char __user *, size_t, loff_t *);
 ssize_t writeMyCDD (struct file *, const char __user *, size_t, loff_t *);
 loff_t lseekMyCDD (struct file *, loff_t, int);
-
+long ioctlMyCDD (struct file *, unsigned int, unsigned long);
 //function to trim the device content befor handling the writing 
 int trimMyCDD (Device*);
 Item* createScull(Device*,int);

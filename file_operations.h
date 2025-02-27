@@ -4,5 +4,6 @@ struct file_operations fops=
 	release:closeMyCDD,
 	read:readMyCDD,
 	write:writeMyCDD,
-	llseek:lseekMyCDD
+	llseek:lseekMyCDD,
+	unlocked_ioctl:ioctlMyCDD
 };
