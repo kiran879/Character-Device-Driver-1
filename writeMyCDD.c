@@ -11,6 +11,7 @@ ssize_t writeMyCDD(struct file *pfi, const char __user *ubuff, size_t size, loff
 		lsize=size;
 	else
 		lsize=ldev->devSize;
+	printk(KERN_INFO "Quantum size: %d\n",ldev->regSize);
 
 	//critical section
 	// synchronize using completion interruptible to handshake with reader

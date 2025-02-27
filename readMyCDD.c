@@ -10,6 +10,7 @@ ssize_t readMyCDD(struct file *pfi, char __user *buff, size_t size, loff_t *offs
 
         printk(KERN_INFO "FILE:%s -> %s:Begin\n",__FILE__,__func__);
         ldev=pfi->private_data;
+	printk(KERN_INFO "Quantum size: %d",ldev->regSize);
 	wait_event_interruptible(ldev->waitQ,ldev->dataSize>0);//move to wait queue until write makes the condition true and wakes up
 	l_item=ldev->item;
 	if(*offset>0)
@@ -24,7 +25,9 @@ ssize_t readMyCDD(struct file *pfi, char __user *buff, size_t size, loff_t *offs
         if(no_quantums%ldev->regSize != 0)
                 no_quantums++;
         //read operation
-        rem_size=lsize;//remaining size to read
+        rem_size=lsize-*offset+1;//remaining size to read
+	if(*offset==0)
+		rem_size--;//if the there is no offset then one more extra char will be read
         nob_read=0;//number of bytes already read
 	//adjusting item number and quantum according to the offset
 	printk(KERN_INFO "offset: %lld\n",*offset);
