@@ -2,8 +2,8 @@
 CC=gcc
 CF= -c -Wall
 DF=-DDEBUG
-application: main.o init.o mainMenu.o exitProgram.o openDevice.o readDevice.o writeDevice.o lseekDevice.o closeDevice.o
-	${CC} -o application main.o init.o mainMenu.o exitProgram.o openDevice.o readDevice.o writeDevice.o lseekDevice.o closeDevice.o
+application: main.o init.o mainMenu.o exitProgram.o openDevice.o readDevice.o writeDevice.o lseekDevice.o closeDevice.o ioctlDevice.o
+	${CC} -o application main.o init.o mainMenu.o exitProgram.o openDevice.o readDevice.o writeDevice.o lseekDevice.o closeDevice.o ioctlDevice.o
 main.o: main.c f_headers.h f_declarations.h
 	${CC} ${CF} ${DF} main.c
 init.o: init.c f_headers.h f_declarations.h
@@ -22,6 +22,8 @@ lseekDevice.o: lseekDevice.c f_headers.h f_declarations.h
 	${CC} ${CF} ${DF} lseekDevice.c
 closeDevice.o: closeDevice.c f_headers.h f_declarations.h
 	${CC} ${CF} ${DF} closeDevice.c
+ioctlDevice.o: ioctlDevice.c f_headers.h f_declarations.h
+	${CC} ${CF} ${DF} ioctlDevice.c
 clean:
 	-rm -f application
 	-rm *.o

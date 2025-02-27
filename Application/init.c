@@ -12,7 +12,8 @@ int init()
 	f_fptr[3]=readDevice;
 	f_fptr[4]=writeDevice;
 	f_fptr[5]=lseekDevice;
-	f_fptr[6]=closeDevice;
+	f_fptr[6]=ioctlDevice;
+	f_fptr[7]=closeDevice;
 
 #ifdef DEBUG
 	printf("F_Operations: FILE:%s-> %s:End\n",__FILE__,__func__);

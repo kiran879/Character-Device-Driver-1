@@ -10,7 +10,8 @@ void* mainMenu(void* arg)
 		"2:Read from the Device",
 		"3:Write into the Device",
 		"4:Move the pointing position in the Device",
-		"5:Close the Device",
+		"5:IOCTL the DEVICE",
+		"6:Close the Device",
 		"0:Exit from the Main Menu",
 		"Please enter your choice"
 	};
@@ -25,7 +26,7 @@ void* mainMenu(void* arg)
 		(*f_fptr[1])((void*)"success");//exitProgram
 	else if(choice==1)
 		(*f_fptr[2])((void*)arg);//openDevice
-	else if(choice<6 && choice>1)
+	else if(choice<7 && choice>1)
 	{
 		if(fd==-1)
 			printf("Application: FILE:%s-> %s: No stream found to the device file, please open the device file\n",__FILE__,__func__);
